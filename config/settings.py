@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     environment: Environment = Field(
         default=Environment.DEV, description="Current environment (dev/prod/staging)"
     )
-    app_name: str = Field(default="MyApp", description="Name of the application")
+    app_name: str = Field(default="AgentsCourse", description="Name of the application")
     deepseek_api_key: str = Field(
         description="API KEY for DEEPSEEK platform", validation_alias="DEEPSEEK_API_KEY"
     )
