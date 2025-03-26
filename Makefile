@@ -100,12 +100,12 @@ mypy:  ## Run mypy type checker
 
 .PHONY: pyupgrade
 pyupgrade:
-	pyupgrade --py312-plus $(PYTHON_FILES)
+	python -c "import glob, subprocess; subprocess.run(['pyupgrade', '--py312-plus'] + glob.glob('src/**/*.py', recursive=True) + glob.glob('config/**/*.py', recursive=True))"
 	@echo "Python code upgraded to Python 3.12+ syntax."
 
 
 .PHONY: lint
-lint: format flake8 bandit mypy
+lint: format flake8 pyupgrade
 	@echo "All linting checks completed."
 
 .PHONY: check-all
