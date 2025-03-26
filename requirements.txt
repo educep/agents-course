@@ -1,0 +1,12 @@
+-e .
+black==23.7.0
+flake8==6.1.0
+ipykernel==6.29.5
+loguru>=0.7.0
+openai==1.55.2
+pandas>=2.0.0
+pre-commit==3.7.0
+pydantic_settings==2.8.1
+pydub==0.25.1
+python-dotenv==1.0.1
+toml==0.10.2

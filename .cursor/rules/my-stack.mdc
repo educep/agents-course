@@ -1,0 +1,11 @@
+---
+description: Thi s file give the technology this project uses
+globs:
+alwaysApply: false
+---
+# Technical stack
+
+- Python for the backend
+- SQL databases, never JSON file storage
+- Separate databases for dev, test, and prod
+- Python tests
