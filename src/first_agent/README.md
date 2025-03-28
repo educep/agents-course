@@ -1,22 +1,3 @@
----
-title: First Agent Template
-emoji: ⚡
-colorFrom: pink
-colorTo: yellow
-sdk: gradio
-sdk_version: 5.15.0
-app_file: app.py
-pinned: false
-tags:
-- smolagents
-- agent
-- smolagent
-- tool
-- agent-course
----
-
-Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
-
 # First Agent - AI Assistant with Gradio UI
 
 This is an AI assistant agent built using the `smolagents` framework, featuring a Gradio web interface and Docker support. The agent can perform various tasks including time queries, web searches, and custom operations.

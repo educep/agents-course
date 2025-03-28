@@ -1,4 +1,5 @@
 from enum import Enum
+from pathlib import Path
 from typing import Any
 
 from pydantic import Field
@@ -19,6 +20,8 @@ class Settings(BaseSettings):
         environment: Current environment (dev/prod/staging)
         app_name: Name of the application
         deepseek_api_key: API KEY for DEEPSEEK platform
+        project_path: Base path of the project
+        hf_token: Hugging Face API token
     """
 
     debug: bool = Field(default=False, description="Debug mode flag")
@@ -29,6 +32,10 @@ class Settings(BaseSettings):
     deepseek_api_key: str = Field(
         description="API KEY for DEEPSEEK platform", validation_alias="DEEPSEEK_API_KEY"
     )
+    project_path: Path = Field(
+        default=Path(__file__).parent.parent, description="Base path of the project"
+    )
+    hf_token: str = Field(description="Hugging Face API token", validation_alias="HF_TOKEN")
 
     model_config = SettingsConfigDict(
         env_file=".env", env_file_encoding="utf-8", case_sensitive=False, env_prefix="myapp_"

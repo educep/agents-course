@@ -1,13 +1,17 @@
+# External imports
 import datetime
-
-# import requests
-from pathlib import Path
+import os
+import tempfile
 
 import pytz
 import yaml
-from Gradio_UI import GradioUI
 from smolagents import CodeAgent, DuckDuckGoSearchTool, HfApiModel, load_tool, tool
 from tools.final_answer import FinalAnswerTool
+
+from config.settings import settings
+
+# Internal imports
+from src.first_agent.Streamlit_UI import StreamlitUI
 
 
 # Below is an example of a tool that does nothing. Amaze us with your creativity !
@@ -50,10 +54,11 @@ model = HfApiModel(
     custom_role_conversions=None,
 )
 
-
 # Import tool from Hub
 image_generation_tool = load_tool("agents-course/text-to-image", trust_remote_code=True)
-path_to_prompts = Path(__file__).parent / "prompts.yaml"
+
+# Reads prompts from prompts.yaml
+path_to_prompts = settings.project_path / "src/first_agent/prompts.yaml"
 with open(path_to_prompts) as stream:
     prompt_templates = yaml.safe_load(stream)
 
@@ -69,13 +74,9 @@ agent = CodeAgent(
     prompt_templates=prompt_templates,
 )
 
-# Add a simple test to verify model responses
-try:
-    test_response = agent.model.chat_completion(
-        messages=[{"role": "user", "content": "Say 'test' if you can hear me"}]
-    )
-    print("Model test response:", test_response)
-except Exception as e:
-    print("Error testing model:", str(e))
+# Create a temporary directory for file uploads
+upload_dir = os.path.join(tempfile.gettempdir(), "streamlit_uploads")
+os.makedirs(upload_dir, exist_ok=True)
 
-GradioUI(agent).launch(server_name="0.0.0.0", server_port=7860)
+# Launch the Streamlit interface
+StreamlitUI(agent, file_upload_folder=upload_dir).run()
