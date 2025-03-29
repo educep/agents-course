@@ -109,6 +109,7 @@ def render_step_log(step_log: MemoryStep, container) -> None:
     """Render a step log in the Streamlit UI"""
     # ActionStep represents a single action taken by the agent (like making a decision or using a tool)
     if isinstance(step_log, ActionStep):
+        save_step_log(step_log)
         # Output the step number
         step_number = f"Step {step_log.step_number}" if step_log.step_number is not None else ""
         if step_number:
@@ -117,7 +118,7 @@ def render_step_log(step_log: MemoryStep, container) -> None:
         # Display the agent's reasoning/thought process before taking action
         if hasattr(step_log, "model_output") and step_log.model_output is not None:
             model_output = process_message_for_streamlit(step_log.model_output)
-            logger.info(f"model_output: {model_output}")
+            # logger.info(f"model_output: {model_output}")
             # Only display model output if there are no tool calls
             container.markdown(model_output)
 

@@ -201,3 +201,6 @@ ignore_*
 
 #cursor
 mcp.json
+
+# local stuff
+agent_logs/
