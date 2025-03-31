@@ -118,8 +118,6 @@ def render_step_log(step_log: MemoryStep, container) -> None:
         # Display the agent's reasoning/thought process before taking action
         if hasattr(step_log, "model_output") and step_log.model_output is not None:
             model_output = process_message_for_streamlit(step_log.model_output)
-            # logger.info(f"model_output: {model_output}")
-            # Only display model output if there are no tool calls
             container.markdown(model_output)
 
         # Handle and display the tools that the agent decided to use
