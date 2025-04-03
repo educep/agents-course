@@ -1,13 +1,17 @@
-import datetime
-
-# import requests
+# External imports
+import datetime  # import requests
 from pathlib import Path
 
 import pytz
 import yaml
 from Gradio_UI import GradioUI
-from smolagents import CodeAgent, DuckDuckGoSearchTool, HfApiModel, load_tool, tool
+from smolagents import CodeAgent, DuckDuckGoSearchTool, LiteLLMModel, load_tool, tool
+
+# from smolagents import HfApiModel
+# Internal imports
 from tools.final_answer import FinalAnswerTool
+
+from config.settings import settings
 
 
 # Below is an example of a tool that does nothing. Amaze us with your creativity !
@@ -43,23 +47,40 @@ final_answer = FinalAnswerTool()
 # If the agent does not answer, the model is overloaded, please use another model or the following Hugging Face Endpoint that also contains qwen2.5 coder:
 # model_id='https://pflgm2locj2t89co.us-east-1.aws.endpoints.huggingface.cloud'
 
-model = HfApiModel(
-    max_tokens=2096,
-    temperature=0.5,
-    model_id="https://pflgm2locj2t89co.us-east-1.aws.endpoints.huggingface.cloud",
-    custom_role_conversions=None,
+# model = HfApiModel(
+#     max_tokens=2096,
+#     temperature=0.5,
+#     model_id="https://pflgm2locj2t89co.us-east-1.aws.endpoints.huggingface.cloud",
+#     custom_role_conversions=None,
+# )
+
+# Define the LLM Model
+model = LiteLLMModel(
+    model_id="deepseek-chat",
+    api_base="https://api.deepseek.com/v1",
+    api_key=settings.deepseek_api_key,
+    temperature=0.0,
 )
 
-
+print(settings.hf_token)
 # Import tool from Hub
-image_generation_tool = load_tool("agents-course/text-to-image", trust_remote_code=True)
+image_generation_tool = load_tool(
+    "m-ric/text-to-image", trust_remote_code=True, token=settings.hf_token
+)
+
 path_to_prompts = Path(__file__).parent / "prompts.yaml"
 with open(path_to_prompts) as stream:
     prompt_templates = yaml.safe_load(stream)
 
 agent = CodeAgent(
     model=model,
-    tools=[final_answer, my_custom_tool, get_current_time_in_timezone, DuckDuckGoSearchTool()],
+    tools=[
+        final_answer,
+        my_custom_tool,
+        image_generation_tool,
+        get_current_time_in_timezone,
+        DuckDuckGoSearchTool(),
+    ],
     max_steps=6,
     verbosity_level=2,  # Increased verbosity
     grammar=None,
@@ -68,14 +89,5 @@ agent = CodeAgent(
     description="A test agent to verify model responses",
     prompt_templates=prompt_templates,
 )
-
-# Add a simple test to verify model responses
-try:
-    test_response = agent.model.chat_completion(
-        messages=[{"role": "user", "content": "Say 'test' if you can hear me"}]
-    )
-    print("Model test response:", test_response)
-except Exception as e:
-    print("Error testing model:", str(e))
 
 GradioUI(agent).launch(server_name="0.0.0.0", server_port=7860)

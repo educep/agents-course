@@ -1,5 +1,0 @@
-duckduckgo_search
-markdownify
-pandas
-requests
-smolagents

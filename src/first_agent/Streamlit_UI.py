@@ -109,7 +109,7 @@ def render_step_log(step_log: MemoryStep, container) -> None:
     """Render a step log in the Streamlit UI"""
     # ActionStep represents a single action taken by the agent (like making a decision or using a tool)
     if isinstance(step_log, ActionStep):
-        save_step_log(step_log)
+        # save_step_log(step_log)
         # Output the step number
         step_number = f"Step {step_log.step_number}" if step_log.step_number is not None else ""
         if step_number:
@@ -226,22 +226,49 @@ def stream_to_streamlit(
                 step_containers.append(step_container)
                 render_step_log(step_log, step_container)
 
-            # Keep track of the final answer
-            final_answer = step_log
+        # Last log is the run's final_answer
+        final_answer = step_log
+        final_answer = handle_agent_output_types(final_answer)
 
         # Process and display the agent's final response based on its type (text, image, or audio)
-        if final_answer:
-            final_answer = handle_agent_output_types(final_answer)
-            result_container = message_container.container()
+        result_container = message_container.container()
 
-            if isinstance(final_answer, AgentText):
-                result_container.markdown(f"**Final answer:**\n{final_answer.to_string()}\n")
-            elif isinstance(final_answer, AgentImage):
-                result_container.markdown("**Final answer:**")
-                result_container.image(final_answer.to_string())
-            elif isinstance(final_answer, AgentAudio):
-                result_container.markdown("**Final answer:**")
-                result_container.audio(final_answer.to_string())
+        if isinstance(final_answer, AgentText):
+            logger.debug("is text")
+            result_container.markdown(f"**Final answer:**\n{final_answer.to_string()}\n")
+        elif isinstance(final_answer, AgentImage):
+            result_container.markdown("**Final answer:**")
+            # Get the actual image data/path from the AgentImage object
+            image_data = final_answer.to_string()
+            if image_data:
+                result_container.image(image_data)
+            else:
+                result_container.error("Failed to load image data")
+        elif isinstance(final_answer, AgentAudio):
+            result_container.markdown("**Final answer:**")
+            result_container.audio(final_answer.to_string())
+        else:
+            # If it's a FinalAnswerStep, try to extract the actual answer
+            logger.debug(f"If it's a FinalAnswerStep, the actual answer: {final_answer}")
+            if hasattr(final_answer, "final_answer"):
+                actual_answer = final_answer.final_answer
+                if isinstance(actual_answer, (AgentText, AgentImage, AgentAudio)):
+                    if isinstance(actual_answer, AgentText):
+                        result_container.markdown(
+                            f"**Final answer:**\n{actual_answer.to_string()}\n"
+                        )
+                    elif isinstance(actual_answer, AgentImage):
+                        result_container.markdown("**Final answer:**")
+                        image_data = actual_answer.to_string()
+                        if image_data:
+                            result_container.image(image_data)
+                        else:
+                            result_container.error("Failed to load image data")
+                    elif isinstance(actual_answer, AgentAudio):
+                        result_container.markdown("**Final answer:**")
+                        result_container.audio(actual_answer.to_string())
+                else:
+                    result_container.markdown(f"**Final answer:** {str(actual_answer)}")
             else:
                 result_container.markdown(f"**Final answer:** {str(final_answer)}")
 
