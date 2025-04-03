@@ -173,6 +173,8 @@ def stream_to_gradio(
 
         final_answer = step_log  # Last log is the run's final_answer
         final_answer = handle_agent_output_types(final_answer)
+        # For LiteLLMModel we need to get the final answer as final_answer.final_answer
+        # not implemented here, but it is for Streamlit
 
         if isinstance(final_answer, AgentText):
             yield gr.ChatMessage(

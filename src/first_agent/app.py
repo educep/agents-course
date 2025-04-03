@@ -1,6 +1,5 @@
 # External imports
 import datetime  # import requests
-from pathlib import Path
 
 import pytz
 import yaml
@@ -62,13 +61,14 @@ model = LiteLLMModel(
     temperature=0.0,
 )
 
-print(settings.hf_token)
+
 # Import tool from Hub
 image_generation_tool = load_tool(
     "m-ric/text-to-image", trust_remote_code=True, token=settings.hf_token
 )
 
-path_to_prompts = Path(__file__).parent / "prompts.yaml"
+# Reads prompts from prompts.yaml
+path_to_prompts = settings.project_path / "src/first_agent/prompts.yaml"
 with open(path_to_prompts) as stream:
     prompt_templates = yaml.safe_load(stream)
 
@@ -91,3 +91,10 @@ agent = CodeAgent(
 )
 
 GradioUI(agent).launch(server_name="0.0.0.0", server_port=7860)
+"""
+# to test directly without Gradio:
+agent.run("make a foto of a cat")
+cd src/first_agent && python app.py
+# in ubuntu I getting for the image_generation_tool:
+# HfHubHTTPError: 401 Client Error
+"""

@@ -249,6 +249,8 @@ def stream_to_streamlit(
             result_container.audio(final_answer.to_string())
         else:
             # If it's a FinalAnswerStep, try to extract the actual answer
+            # For LiteLLMModel we need to get the final answer as final_answer.final_answer
+
             logger.debug(f"If it's a FinalAnswerStep, the actual answer: {final_answer}")
             if hasattr(final_answer, "final_answer"):
                 actual_answer = final_answer.final_answer
