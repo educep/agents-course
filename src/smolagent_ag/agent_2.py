@@ -12,6 +12,23 @@ from smolagents.models import LiteLLMModel
 # Internal imports
 from config.settings import settings
 
+"""
+# Agent Implementation Analysis:
+# =============================
+# This file demonstrates two different approaches to building AI agents using SmolaAgents:
+# 1. Code Agent: Uses Python code execution approach with step-by-step reasoning
+# 2. Tool Calling Agent: Uses direct tool invocation with less intermediate processing
+#
+# Key differences in behavior:
+# - Code Agent uses multiple tools and follows a multi-step approach (theme generation → search → final answer)
+# - Tool Calling Agent uses only web search and takes a more direct approach
+# - Different prompts lead to different strategies (specific theme vs. general request)
+# - Different output formats (specific link vs. categorized recommendations)
+#
+# These differences highlight how agent architecture, available tools, and prompt specificity
+# significantly impact problem-solving approaches and final results.
+"""
+
 
 @tool
 def suggest_menu(occasion: str) -> str:
@@ -115,9 +132,15 @@ https://open.spotify.com/playlist/3cejFigsE9RrSdG4xUCmay.
 It features 42 songs perfectfor a mysterious and villainous atmosphere.
 """
 
-
+# ------------------------------ TOOL CALLING AGENT ------------------------------------
 agent = ToolCallingAgent(tools=[DuckDuckGoSearchTool()], model=model)
 
 step_log_tool = agent.run(
     "Search for the best music recommendations for a party at the Wayne's mansion."
 )
+
+# Note: The key difference between these agents is:
+# 1. The Code Agent has access to multiple tools and uses Python code execution
+# 2. The Tool Calling Agent only has access to web search and uses direct tool invocation
+# 3. The prompts are different (specific theme vs. general request)
+# This explains the different approaches and results seen in execution
