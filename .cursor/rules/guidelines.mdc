@@ -1,7 +1,7 @@
 ---
-description: This file give general coding guidelines for the project
+description:
 globs:
-alwaysApply: false
+alwaysApply: true
 ---
 # Coding pattern preferences
 

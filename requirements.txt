@@ -4,6 +4,8 @@ duckduckgo_search==7.5.4
 flake8==6.1.0
 gradio
 ipykernel==6.29.5
+langchain==0.3.23
+langchain-community==0.3.21
 loguru>=0.7.0
 markdownify
 openai>=1.66.1
