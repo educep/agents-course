@@ -85,7 +85,12 @@ model = LiteLLMModel(
 )
 
 # Initialize the agent
-agent = CodeAgent(tools=[party_planning_retriever], model=model)
+agent = CodeAgent(
+    tools=[party_planning_retriever],
+    model=model,
+    max_steps=10,
+    verbosity_level=2,
+)
 
 # Example usage
 response = agent.run(
