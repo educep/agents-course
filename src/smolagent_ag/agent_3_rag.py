@@ -11,7 +11,7 @@ from config.settings import settings
 
 class PartyPlanningRetrieverTool(Tool):
     name = "party_planning_retriever"
-    description = "Uses semantic search to retrieve relevant party planning ideas for Alfred's superhero-themed party at Wayne Manor."
+    description = "Uses lexical search (BM25) to retrieve relevant party planning ideas based on keyword matching for Alfred's superhero-themed party at Wayne Manor."
     inputs = {
         "query": {
             "type": "string",
