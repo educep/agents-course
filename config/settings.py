@@ -37,6 +37,8 @@ class Settings(BaseSettings):
     )
     hf_token: str = Field(description="Hugging Face API token", validation_alias="HF_TOKEN")
 
+    serper_api_key: str = Field(description="Serper API KEY", validation_alias="SERPER_API_KEY")
+
     model_config = SettingsConfigDict(
         env_file=".env", env_file_encoding="utf-8", case_sensitive=False, env_prefix="myapp_"
     )
