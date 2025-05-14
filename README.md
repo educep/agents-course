@@ -1,6 +1,6 @@
 # Agents course
 
-
+This course comes from the HuggingFace course: [course](https://huggingface.co/learn/agents-course/unit0/introduction)
 
 ## Features
 
