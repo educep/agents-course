@@ -22,6 +22,7 @@ class Settings(BaseSettings):
         deepseek_api_key: API KEY for DEEPSEEK platform
         project_path: Base path of the project
         hf_token: Hugging Face API token
+        openai_api_key: OpenAI API key
     """
 
     debug: bool = Field(default=False, description="Debug mode flag")
@@ -31,6 +32,9 @@ class Settings(BaseSettings):
     app_name: str = Field(default="AgentsCourse", description="Name of the application")
     deepseek_api_key: str = Field(
         description="API KEY for DEEPSEEK platform", validation_alias="DEEPSEEK_API_KEY"
+    )
+    open_api_key: str = Field(
+        description="API KEY for OPENAI platform", validation_alias="OPENAI_API_KEY"
     )
     project_path: Path = Field(
         default=Path(__file__).parent.parent, description="Base path of the project"
