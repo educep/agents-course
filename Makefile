@@ -60,16 +60,6 @@ test:
 	pytest
 	@echo "Tests executed."
 
-# Build the Docker image
-build:
-	docker build -t tools .
-	@echo "Docker image built."
-
-# Run the Docker container : docker run -it --rm mle_test ls -la venv
-run:
-	docker run -it --rm --entrypoint /bin/bash tools
-	@echo "Docker container running with interactive shell."
-
 # Linting and formatting
 .PHONY: format
 format:
@@ -131,6 +121,4 @@ help:
 	@echo "  make test         - Run pytest"
 	@echo "  make check-all    - Run all checks and tests"
 	@echo "  make clean        - Clean up the environment"
-	@echo "  make build        - Build the Docker image"
-	@echo "  make run          - Run the Docker container"
 	@echo "  make help         - Display this help message"
