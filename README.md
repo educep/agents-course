@@ -12,7 +12,7 @@ This project uses **uv** as the package manager for faster and more reliable dep
 
 ## Prerequisites
 
-- Python 3.9 or higher
+- Python 3.12 or higher
 - Git
 - **uv** package manager (will be installed automatically via Makefile)
 
