@@ -6,7 +6,7 @@ This repository contains examples and explanations for implementing Retrieval Au
 
 - [Party Planning Agent](agent_3_rag.py): A simple RAG system using BM25 retrieval
 - [BM25 vs TF-IDF Comparison](compare_bm25_tfidf.py): Implementation and comparison of both retrieval methods
-- [BM25 Parameter Visualization](auxiliary_code/charts/bm25_parameter_plots.py): Interactive visualizations of BM25 parameters
+- [BM25 Parameter Visualization](retrievers_comparison/charts/bm25_parameter_plots.py): Interactive visualizations of BM25 parameters
 
 ## Understanding BM25 and TF-IDF
 
@@ -26,7 +26,7 @@ Both BM25 and TF-IDF are lexical retrieval algorithms that match documents based
 
 BM25 has two key parameters that control its behavior:
 
-![Effect of k1 on Term Frequency Saturation](auxiliary_code/charts/bm25_k1_effect.png)
+![Effect of k1 on Term Frequency Saturation](retrievers_comparison/charts/bm25_k1_effect.png)
 
 #### The k₁ Parameter: Term Frequency Saturation
 
@@ -40,7 +40,7 @@ $$\text{TF}_{\text{BM25}} = \frac{(k_1 + 1) \cdot \text{tf}}{k_1 \cdot (1 - b + 
 - With **k₁ = 1.2-2.0** (standard range): Additional occurrences continue to matter but with diminishing returns.
 - With **k₁ > 3.0**: Each additional occurrence adds significant value, closer to TF-IDF's linear behavior.
 
-![Effect of b on Document Length Normalization](auxiliary_code/charts/bm25_b_effect.png)
+![Effect of b on Document Length Normalization](retrievers_comparison/charts/bm25_b_effect.png)
 
 #### The b Parameter: Document Length Normalization
 
@@ -50,7 +50,7 @@ The b parameter controls how much document length affects scoring. It answers th
 - With **b = 0.75** (standard value): Moderate length normalization.
 - With **b = 1**: Full document length normalization, where score is directly proportional to term density.
 
-![Combined Parameter Effects](auxiliary_code/charts/bm25_parameter_heatmap.png)
+![Combined Parameter Effects](retrievers_comparison/charts/bm25_parameter_heatmap.png)
 
 #### Parameter Recommendations for Different Use Cases
 
@@ -59,7 +59,7 @@ The b parameter controls how much document length affects scoring. It answers th
 3. **Short text collections** (tweets, headlines): k₁ = 1.2, b = 0.25-0.5
 4. **Academic paper search**: k₁ = 1.5, b = 0.9
 
-For a more detailed explanation with visualizations, see the [full BM25 parameter guide](auxiliary_code/charts/explanation_consolidated.md).
+For a more detailed explanation with visualizations, see the [full BM25 parameter guide](retrievers_comparison/charts/explanation_consolidated.md).
 
 ## Implementation Notes
 
